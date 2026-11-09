@@ -9,3 +9,4 @@ Am anfang habe ich gelernt was die unterschiedliche Merkmals Typen sind wie häu
 | Hobby            | Teilnehmerzahl | Wasserpegel   |
 | Berufsausbildung | Haarfarbe      | Gewicht       |
 |                  | Geschlecht     | Zeitintervall |
+|                  |                | Strecke       |
