@@ -56,3 +56,17 @@ Welcher Datentyp eignet sich?
 • 5 Mio. × 4 Byte = 20 MB, mit einem 1-Byte-Typ (z. B. TINYINT) nur 5 MB.
 • Besser: kleinerer Datentyp oder ein Aufzählungstyp (ENUM).
 • Gegenargument: Bei kleinen Datenmengen spielt der Unterschied keine grosse Rolle, bei 5 Mio. Datensätzen aber schon.
+
+ ## Wo wird UTF-8, wo UTF-16 eingesetzt?
+• UTF-8: Internet (HTML, E-Mail, JSON), Linux/macOS, die meisten Textdateien und Programmiersprachen-Quellcode.
+• UTF-16: intern in Windows, in Java- und .NET-Strings und in JavaScript.
+2. Was bedeutet die Byteorder bei UTF-16? Sie legt fest, in welcher Reihenfolge die zwei Bytes eines 16-Bit-Zeichens gespeichert werden (Big Endian: hoch zuerst, Little Endian: tief zuerst). Mit dem BOM (FE FF bzw. FF FE) erkennt das Programm die richtige Reihenfolge.
+3. Was bedeutet «abwärtskompatibel» bei UTF-8? Ein reiner ASCII-Text (Zeichen 0–127) ist in UTF-8 byte-identisch mit dem ASCII-Text. Alte Programme können solche Texte darum weiterhin lesen. Bei UTF-16 gibt es das nicht: Auch ein «A» braucht 2 Byte (00 41), also ist ein ASCII-Text in UTF-16 nicht mehr ASCII-lesbar.
+4. Speicherbedarf bei deutschem/englischem Text:
+• ISO 8859: immer 1 Byte pro Zeichen → am kleinsten
+• UTF-8: 1 Byte pro Zeichen, nur Umlaute und ß brauchen 2 Byte → fast gleich klein
+• UTF-16: 2 Byte pro Zeichen → ca. doppelt so gross
+5. Wann wird UTF-16 vier Byte lang? Bei Zeichen ab U+10000 (ausserhalb der Basic Multilingual Plane), z. B. Emojis, seltene Schriftzeichen oder Musiksymbole. Sie werden als Surrogate-Paar (High Surrogate + Low Surrogate) gespeichert.
+6. Zeichen mit bekanntem Unicode in Word eingeben (z. B. €): In Word den Hex-Code 20AC tippen und danach Alt + C drücken. Dann wird der Code in das Zeichen € umgewandelt. Alternativ: Einfügen → Symbol.
+7. Problem beim Violinschlüssel (𝄞, U+1D11E): Der Code hat 5 Hex-Stellen und liegt ausserhalb von U+FFFF. Er braucht in UTF-16 ein Surrogate-Paar (D834 DD1E), also 4 Byte. Das ist komplizierter. Ausserdem muss die gewählte Schriftart das Zeichen enthalten, sonst erscheint nur ein Kästchen oder Fragezeichen.
+8. UTF-8-Bitcode für ® (U+00AE): U+00AE liegt im Bereich 0080–07FF, also 2 Byte: 110xxxxx 10xxxxxx. 00AE = 1010'1110 → 1100'0010 1010'1110 (hex: C2 AE)
